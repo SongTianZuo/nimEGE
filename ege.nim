@@ -11,9 +11,11 @@ proc initgraph*(Width: cint; Height: cint; Flag: cint = 0x100){.cdecl, importc:"
 proc initgraph*(gdriver: ptr cint; gmode: ptr cint; path: cstring) {.importc:"initgraph", header:"graphics.h", cdecl, exportc, dynlib.}
 proc getch*(){.importc:"getch", header:"graphics.h", cdecl.}
 
+
 #[
 
-to do 
+to do：
+待完成:
 
 ]#
 
