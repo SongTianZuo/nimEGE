@@ -1,5 +1,10 @@
-##  EGE graphics library wrapper
+## EGE graphics library wrapper
 ##
+##  使用前，先将 EGE 的头文件（graphics.h, ege.h, ege文件夹) 和 
+##  对应的静态链接（libgraphics64.a 或 libgraphics.a）安装配置到MingW64/32中
+##
+##  before use, make sure EGE header files(graphics.h, ege.h, ege folder) and the 
+##  corresponding static library(libgraphics64.a or libgraphics.a) copy into MingW64/32
 
 #[
     ege graphics library wrapper
@@ -7,7 +12,10 @@
         nim cpp ege.nim
 ]#
 
-{.passL: "-lgraphics -lgdi32 -limm32 -lmsimg32 -lole32 -loleaut32 -lwinmm -luuid".}
+when hostCPU == "amd64":
+    {.passL: "-lgraphics64 -lgdi32 -limm32 -lmsimg32 -lole32 -loleaut32 -lwinmm -luuid".}
+else:
+    {.passL: "-lgraphics -lgdi32 -limm32 -lmsimg32 -lole32 -loleaut32 -lwinmm -luuid".}
 
 const
     CW_USEDEFAULT* = (cast[cint](0x80000000))
