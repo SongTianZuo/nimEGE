@@ -573,11 +573,14 @@ proc rgb2gray*(rgb: color_t): color_t {.importc, header:"graphics.h", cdecl.}
     ## This function returns the color of the grayscale value corresponding to the specified color.
     ## 
     
+#[
 proc rgb2gray*(rgb: COLORS): color_t =
     ## 详见 rgb2gray(rgb: color_t)
     ##
     ## see rgb2gray(rgb: color_t)
     rgb2gray(cast[color_t](rgb))
+]#
+    
 proc rgb2hsl*(rgb: color_t; H: ptr cfloat; S: ptr cfloat; L: ptr cfloat) {.importc, header:"graphics.h", cdecl.}
     ## 该函数用于转换 RGB 颜色为 HSL 颜色。
     ## 
@@ -620,12 +623,14 @@ proc rgb2hsl*(rgb: color_t; H: ptr cfloat; S: ptr cfloat; L: ptr cfloat) {.impor
     ##  The Lightness of an HSL color model (brightness) component, 0 ≤ L ≤ 1。
     ## 
 
+#[
 proc rgb2hsl*(rgb: COLORS; H: ptr cfloat; S: ptr cfloat; L: ptr cfloat) =
     ## 详见 rgb2hsl(rgb: color_t; H: ptr cfloat; S: ptr cfloat; L: ptr cfloat)
     ##
     ## see rgb2hsl(rgb: color_t; H: ptr cfloat; S: ptr cfloat; L: ptr cfloat)
     rgb2hsl(cast[color_t](rgb), H, S, L)
-    
+ ]#
+ 
 proc rgb2hsv*(rgb: color_t; H: ptr cfloat; S: ptr cfloat; V: ptr cfloat) {.importc, header:"graphics.h", cdecl.}
     ## 该函数用于转换 RGB 颜色为 HSV 颜色。
     ## 
@@ -668,11 +673,13 @@ proc rgb2hsv*(rgb: color_t; H: ptr cfloat; S: ptr cfloat; V: ptr cfloat) {.impor
     ##  The Value(lightness) component of the original HSL color model is 0 ≤ L ≤ 1.
     ## 
 
+#[
 proc rgb2hsv*(rgb: COLORS; H: ptr cfloat; S: ptr cfloat; V: ptr cfloat)=
     ## 详见 rgb2hsv(rgb: color_t; H: ptr cfloat; S: ptr cfloat; V: ptr cfloat)
     ##
     ## See rgb2hsv(rgb: color_t; H: ptr cfloat; S: ptr cfloat; V: ptr cfloat)
     rgb2hsv(cast[color_t](rgb), H, S, V)
+]#
     
 proc setbkcolor*(color: color_t; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
     ## 这个函数用于设置当前背景色。并且会把当前图片上是原背景色的像素，转变为新的背景色。
@@ -692,11 +699,13 @@ proc setbkcolor*(color: color_t; pimg: PIMAGE = nil) {.importc, header:"graphics
     ##  Specifies the background color to set.Note that this setting also affects the text background color.
     ## 
 
+#[
 proc setbkcolor*(color: COLORS; pimg: PIMAGE = nil)=
     ## 详见 setbkcolor(color: color_t; pimg: PIMAGE = nil)
     ## 
     ## See setbkcolor(color: color_t; pimg: PIMAGE = nil)
     setbkcolor(cast[color_t](color), pimg)
+ ]#
     
 proc setbkcolor_f*(color: color_t; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
     ## 设置清屏时所用的背景色。
@@ -705,12 +714,14 @@ proc setbkcolor_f*(color: color_t; pimg: PIMAGE = nil) {.importc, header:"graphi
     ## Sets the background color to use when clearing the screen。
     ## That is, only the color used when setting cleardevice does not take effect immediately, so you need to wait for cleardevice call.
     ##
-    
+
+#[    
 proc setbkcolor_f*(color: COLORS; pimg: PIMAGE = nil)=
     ## 详见 setbkcolor_f(color: color_t; pimg: PIMAGE = nil)
     ## 
     ## See setbkcolor_f(color: color_t; pimg: PIMAGE = nil)
     setbkcolor_f(cast[color_t](color), pimg)
+]#
 
 proc setbkmode*(iBkMode: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
     ## 这个函数用于设置输出文字时的背景模式。
@@ -743,37 +754,42 @@ proc setcolor*(color: color_t; pimg: PIMAGE = nil) {.importc, header:"graphics.h
     ## 
     ## This function is used to set the drawing foreground.
     ## 
-    
+
+#[    
 proc setcolor*(color: COLORS; pimg: PIMAGE = nil)=
     ## 详见 setcolor(color: color_t; pimg: PIMAGE = nil)
     ##
     ## See setcolor(color: color_t; pimg: PIMAGE = nil)
     setcolor(cast[color_t](color), pimg)
-    
+ ]#
+ 
 proc setfillcolor*(color: color_t; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
     ## 这个函数用于设置绘图填充色。
     ## 
     ## This function is used to set the drawing fill color.
     ## 
     
+#[    
 proc setfillcolor*(color: COLORS; pimg: PIMAGE = nil)=
     ## 详见 setfillcolor(color: color_t; pimg: PIMAGE = nil)
     ##
     ## See setfillcolor(color: color_t; pimg: PIMAGE = nil)
     setfillcolor(cast[color_t](color), pimg)
+]#
     
 proc setfontbkcolor*(color: color_t; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
     ## 这个函数用于设置文字背景色。
     ## 
     ## This function is used to set the text background color.
     ## 
-    
+
+#[    
 proc setfontbkcolor*(color: COLORS; pimg: PIMAGE = nil)=
     ## 详见 setfontbkcolor(color: color_t; pimg: PIMAGE = nil)
     ##
     ## See setfontbkcolor(color: color_t; pimg: PIMAGE = nil)
     setfontbkcolor(cast[color_t](color), pimg)
-
+]#
 
     
 
@@ -802,14 +818,14 @@ when isMainModule:
     initgraph(640,480)
     setcaption("windows Title")
     setcolor(0xff0000);
-    setcolor(BLUE)
+    setcolor(cast[color_t](BLUE))
     setcolor(EGERGB(0, 0, 255))
     setcolor(hsl2rgb(240, 1, 0.5))
-    setbkcolor_f(RED)
+    setbkcolor_f(cast[color_t](RED))
     cleardevice()
     discard getch()
     setcaption( newWideCString("窗口标题"))
-    setbkcolor_f(YELLOW)
+    setbkcolor_f( cast[color_t](YELLOW))
     cleardevice()
     discard getch()
     closegraph()
