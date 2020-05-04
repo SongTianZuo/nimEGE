@@ -808,11 +808,1072 @@ proc getch*():cint{.importc:"getch", header:"graphics.h", cdecl.}
     ##  If there is keyboard character input, return the key code;Otherwise do not return and wait.
     ## 
     
-#[
-to do：
-待完成:
+proc arc*(x: cint; y: cint; stangle: cint; endangle: cint; radius: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+proc arcf*(x: cfloat; y: cfloat; stangle: cfloat; endangle: cfloat; radius: cfloat;
+          pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画圆弧。边线颜色由setcolor函数决定
+    ##
+    ## **参数**
+    ##  x
+    ##
+    ##  圆弧的圆心 x 坐标。
+    ##
+    ##  y
+    ##
+    ##  圆弧的圆心 y 坐标。
+    ##
+    ##  stangle
+    ##
+    ##  圆弧的起始角的角度。
+    ##
+    ##  endangle
+    ##
+    ##  圆弧的终止角的角度。
+    ##
+    ##  radius
+    ##
+    ##  圆弧的半径。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
 
-]#
+proc bar*(left: cint; top: cint; right: cint; bottom: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画无边框填充矩形。其中，填充颜色由setfillstyle函数决定
+    ##
+    ## **参数**
+    ##  left
+    ##
+    ##  矩形左部 x 坐标。
+    ##
+    ##  top
+    ##
+    ##  矩形上部 y 坐标。
+    ##
+    ##  right
+    ##
+    ##  矩形右部 x 坐标（该点取不到，实际右边界为right-1）。
+    ##
+    ##  bottom
+    ##
+    ##  矩形下部 y 坐标（该点取不到，实际下边界为bottom-1）。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc bar3d*(left: cint; top: cint; right: cint; bottom: cint; depth: cint; topflag: bool;
+           pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画有边框三维填充矩形。其中，填充颜色由setfillstyle函数决定
+    ##
+    ## **参数**
+    ##  left
+    ##
+    ##  矩形左部 x 坐标。
+    ##
+    ##  top
+    ##
+    ##  矩形上部 y 坐标。
+    ##
+    ##  right
+    ##
+    ##  矩形右部 x 坐标（该点取不到，实际右边界为right-1）。
+    ##
+    ##  bottom
+    ##
+    ##  矩形下部 y 坐标（该点取不到，实际下边界为bottom-1）。
+    ##
+    ##  depth
+    ##
+    ##  矩形深度。
+    ##
+    ##  topflag
+    ##
+    ##  为 false 时，将不画矩形的三维顶部。该选项可用来画堆叠的三维矩形。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  #include "graphics.h"
+    ##
+    ##  int main()
+    ##
+    ##  {
+    ##
+    ##      initgraph(600, 400);
+    ##
+    ##      setfillstyle(RED);
+    ##
+    ##      bar3d(100, 100, 150, 150, 20, 1);
+    ##
+    ##      getch();
+    ##
+    ##      return 0;
+    ##
+    ##  }
+    ##  示例效果：
+    ##
+    ##
+    ##
+    ##
+
+proc circle*(x: cint; y: cint; radius: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+proc circlef*(x: cfloat; y: cfloat; radius: cfloat; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画圆。此圆是空心的，不填充，而边线颜色由setcolor函数决定
+    ##
+    ## **参数**
+    ##  x
+    ##
+    ##  圆的圆心 x 坐标。
+    ##
+    ##  y
+    ##
+    ##  圆的圆心 y 坐标。
+    ##
+    ##  radius
+    ##
+    ##  圆的半径。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc drawbezier*(numpoints: cint; polypoints: ptr cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画bezier曲线。边线颜色由setcolor函数决定
+    ##
+    ## **参数**
+    ##  numpoints
+    ##
+    ##  多边形点的个数，需要是被3除余1的数，如果不是，则忽略最后面若干个点。
+    ##
+    ##  polypoints
+    ##
+    ##  每个点的坐标（依次两个分别为x,y），数组元素个数为 numpoints * 2。
+    ##
+    ##  每一条bezier曲线由两个端点和两个控制点组成，相邻两条则共用端点。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc drawlines*(numliness: cint; polypoints: ptr cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画多条线段。边线颜色由setcolor函数决定
+    ##
+    ## **参数**
+    ##  numlines
+    ##
+    ##  线段数目。
+    ##
+    ##  polypoints
+    ##
+    ##  每个点的坐标（依次两个分别为x,y），数组元素个数为 numlines * 4。
+    ##
+    ##  每两个点画一线段。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc drawpoly*(numliness: cint; polypoints: ptr cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画多边形。边线颜色由setcolor函数决定
+    ##
+    ## **参数**
+    ##  numpoints
+    ##
+    ##  多边形点的个数。
+    ##
+    ##  polypoints
+    ##
+    ##  每个点的坐标（依次两个分别为x,y），数组元素个数为 numpoints * 2。
+    ##
+    ##  该函数并不会自动连接多边形首尾。如果需要画封闭的多边形，请将最后一个点设置为与第一点相同。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc ellipse*(x: cint; y: cint; stangle: cint; endangle: cint; xradius: cint;
+             yradius: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+proc ellipsef*(x: cfloat; y: cfloat; stangle: cfloat; endangle: cfloat; xradius: cfloat;
+              yradius: cfloat; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画椭圆弧线。边线颜色由setcolor函数决定
+    ##
+    ## **参数**
+    ##  x
+    ##
+    ##  椭圆弧线的圆心 x 坐标。
+    ##
+    ##  y
+    ##
+    ##  椭圆弧线的圆心 y 坐标。
+    ##
+    ##  stangle
+    ##
+    ##  椭圆弧线的起始角的角度。
+    ##
+    ##  endangle
+    ##
+    ##  椭圆弧线的终止角的角度。
+    ##
+    ##  xradius
+    ##
+    ##  椭圆弧线的 x 轴半径。
+    ##
+    ##  yradius
+    ##
+    ##  椭圆弧线的 y 轴半径。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc fillellipse*(x: cint; y: cint; xradius: cint; yradius: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+proc fillellipsef*(x: cfloat; y: cfloat; xradius: cfloat; yradius: cfloat;
+                  pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画填充的椭圆。边线颜色由setcolor函数决定，填充颜色由setfillstyle函数决定。
+    ##
+    ## **参数**
+    ##  x
+    ##
+    ##  椭圆的圆心 x 坐标。
+    ##
+    ##  y
+    ##
+    ##  椭圆的圆心 y 坐标。
+    ##
+    ##  xradius
+    ##
+    ##  椭圆的 x 轴半径。
+    ##
+    ##  yradius
+    ##
+    ##  椭圆的 y 轴半径。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc fillpoly*(numpoints: cint; polypoints: ptr cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画填充的多边形。边线颜色由setcolor函数决定，填充颜色由setfillstyle函数决定
+    ##
+    ## **参数**
+    ##  numpoints
+    ##
+    ##  多边形点的个数。
+    ##
+    ##  polypoints
+    ##
+    ##  每个点的坐标，数组元素个数为 numpoints * 2。
+    ##
+    ##  该函数会自动连接多边形首尾。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##  说明：
+    ##
+    ##  如果这个多边形发生自相交，那么自交次数为奇数的区域则不填充，偶数次的填充，不自交就是偶数次。不过这样说明相信非常难理解，以下给个例子：
+    ##
+    ##  #include "graphics.h"
+    ##
+    ##  int main()
+    ##
+    ##  {
+    ##
+    ##      initgraph(600, 400);
+    ##
+    ##      setfillstyle(RED);
+    ##
+    ##      int pt[] = {
+    ##
+    ##          0,   0,
+    ##
+    ##          100, 0,
+    ##
+    ##          100, 100,
+    ##
+    ##          10,  10,
+    ##
+    ##          90,  10,
+    ##
+    ##          0,   100,
+    ##
+    ##      };
+    ##
+    ##      fillpoly(6, pt);
+    ##
+    ##      getch();
+    ##
+    ##      return 0;
+    ##
+    ##  }
+    ##  运行结果：
+    ##
+    ##  第二个例子：
+    ##
+    ##  #include "graphics.h"
+    ##
+    ##  int main()
+    ##
+    ##  {
+    ##
+    ##      initgraph(600, 400);
+    ##
+    ##      setfillstyle(RED);
+    ##
+    ##      int pt[] = {
+    ##
+    ##          0,   0,
+    ##
+    ##          100, 0,
+    ##
+    ##          100, 100,
+    ##
+    ##          0,   100,
+    ##
+    ##          0,   0,
+    ##
+    ##          100, 0,
+    ##
+    ##          100, 120,
+    ##
+    ##          0,   100,
+    ##
+    ##      };
+    ##
+    ##      fillpoly(8, pt);
+    ##
+    ##      getch();
+    ##
+    ##      return 0;
+    ##
+    ##  }
+    ##  运行结果：
+    ##
+    ##
+    ##
+    ##
+
+proc floodfill*(x: cint; y: cint; border: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数使用setfillstyle设置的填充方式对区域进行填充。填充颜色由setfillstyle函数决定。
+    ##
+    ## **参数**
+    ##  x
+    ##
+    ##  填充的起始点 x 坐标。
+    ##
+    ##  y
+    ##
+    ##  填充的起始点 y 坐标。
+    ##
+    ##  border
+    ##
+    ##  填充的边界颜色。填充动作在该颜色围成的区域内填充。如果该颜色围成的区域不封闭，那么将使全屏幕都填充上。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc floodfillsurface*(x: cint; y: cint; areacolor: color_t; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数使用setfillstyle设置的填充方式对区域进行填充。填充颜色由setfillstyle函数决定。
+    ##
+    ## **参数**
+    ##  x
+    ##
+    ##  填充的起始点 x 坐标。
+    ##
+    ##  y
+    ##
+    ##  填充的起始点 y 坐标。
+    ##
+    ##  areacolor
+    ##
+    ##  填充区域的原本颜色。等于该颜色且与起始点相连所构成的区域，由setfillcolor所设置的颜色来填充。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+
+
+proc getheight*(pimg: PIMAGE = nil): cint {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于获取图片高度。
+    ##
+    ## **参数**
+    ##  （无）
+    ##
+    ##
+    ## **返回值**
+    ##  返回图片高度。
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc getlinestyle*(plinestyle: ptr cint; pupattern: ptr cushort = nil;
+                  pthickness: ptr cint = nil; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于获取当前线形。
+    ##
+    ## **参数**
+    ##  plinestyle
+    ##
+    ##  返回当前线型。详见 setlinestyle。
+    ##
+    ##  pupattern
+    ##
+    ##  返回当前自定义线形数据。
+    ##
+    ##  pthickness
+    ##
+    ##  返回当前线形宽度。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc getpixel*(x: cint; y: cint; pimg: PIMAGE = nil): color_t {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于获取像素点的颜色。
+    ##
+    ## **参数**
+    ##  x
+    ##
+    ##  要获取颜色的 x 坐标。
+    ##
+    ##  y
+    ##
+    ##  要获取颜色的 y 坐标。
+    ##
+    ##
+    ## **返回值**
+    ##  指定点的颜色。
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##  其它说明：另有高速版的getpixel_f函数，参数一样，作用一样，但不进行相对坐标变换和边界检查（如果越界绘图，要么画错地方，要么程序结果莫名其妙，甚至直接崩溃），并且必须在批量绘图模式下才能使用，否则将发生不可预知的结果。
+    ##
+    ##
+    ##
+    ##
+
+proc getwidth*(pimg: PIMAGE = nil): cint {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于获取图片宽度。
+    ##
+    ## **参数**
+    ##  （无）
+    ##
+    ##
+    ## **返回值**
+    ##  返回图片宽度。
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc getx*(pimg: PIMAGE = nil): cint {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于获取当前 x 坐标。
+    ##
+    ## **参数**
+    ##  （无）
+    ##
+    ##
+    ## **返回值**
+    ##  返回当前 x 坐标。
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc gety*(pimg: PIMAGE = nil): cint {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于获取当前 y 坐标。
+    ##
+    ## **参数**
+    ##  （无）
+    ##
+    ##
+    ## **返回值**
+    ##  返回当前 y 坐标。
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc line*(x1: cint; y1: cint; x2: cint; y2: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画线。
+    ##
+    ## **参数**
+    ##  x1
+    ##
+    ##  线的起始点的 x 坐标。
+    ##
+    ##  y1
+    ##
+    ##  线的起始点的 y 坐标。
+    ##
+    ##  x2
+    ##
+    ##  线的终止点的 x 坐标（该点本身画不到）。
+    ##
+    ##  y2
+    ##
+    ##  线的终止点的 y 坐标（该点本身画不到）。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##  其它说明：另有高速版的line_f函数，参数一样，作用一样，但不进行相对坐标变换和边界检查（如果越界绘图，要么画错地方，要么程序结果莫名其妙，甚至直接崩溃），并且必须在窗口锁定绘图模式下才能使用，否则将发生不可预知的结果。
+    ##
+    ##
+    ##
+    ##
+
+proc linerel*(dx: cint; dy: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画线。
+    ##
+    ## **参数**
+    ##  dx
+    ##
+    ##  从“当前点”cx开始画线，沿 x 轴偏移 dx，终点为cx+dx（终点本身画不到）。
+    ##
+    ##  dy
+    ##
+    ##  从“当前点”cy开始画线，沿 y 轴偏移 dy，终点为cy+dy（终点本身画不到）。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##  其它说明：另有高速版的linerel_f函数，参数一样，作用一样，但不进行相对坐标变换和边界检查（如果越界绘图，要么画错地方，要么程序结果莫名其妙，甚至直接崩溃），并且必须在窗口锁定绘图模式下才能使用，否则将发生不可预知的结果。
+    ##
+    ##
+    ##
+    ##
+
+proc lineto*(x: cint; y: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画线。
+    ##
+    ## **参数**
+    ##  x
+    ##
+    ##  从“当前点”开始画线，终点横坐标为 x （终点本身画不到）。
+    ##
+    ##  y
+    ##
+    ##  从“当前点”开始画线，终点纵坐标为 y （终点本身画不到）。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##  其它说明：另有高速版的lineto_f函数，参数一样，作用一样，但不进行相对坐标变换和边界检查（如果越界绘图，要么画错地方，要么程序结果莫名其妙，甚至直接崩溃），并且必须在窗口锁定绘图模式下才能使用，否则将发生不可预知的结果。
+    ##
+    ##
+    ##
+    ##
+
+proc moverel*(dx: cint; dy: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于移动当前点。有些绘图操作会从“当前点”开始，这个函数可以设置该点。
+    ##
+    ## **参数**
+    ##  dx
+    ##
+    ##  将当前点沿 x 轴移动 dx。
+    ##
+    ##  dy
+    ##
+    ##  将当前点沿 y 轴移动 dy。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc moveto*(x: cint; y: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于移动当前点。有些绘图操作会从“当前点”开始，这个函数可以设置该点。
+    ##
+    ## **参数**
+    ##  x
+    ##
+    ##  新的当前点 x 坐标。
+    ##
+    ##  y
+    ##
+    ##  新的当前点 y 坐标。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc pieslice*(x: cint; y: cint; stangle: cint; endangle: cint; radius: cint;
+              pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+proc pieslicef*(x: cfloat; y: cfloat; stangle: cfloat; endangle: cfloat; radius: cfloat;
+               pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画填充圆扇形。
+    ##
+    ## **参数**
+    ##  x
+    ##
+    ##  圆扇形的圆心 x 坐标。
+    ##
+    ##  y
+    ##
+    ##  圆扇形的圆心 y 坐标。
+    ##
+    ##  stangle
+    ##
+    ##  圆扇形的起始角的角度。
+    ##
+    ##  endangle
+    ##
+    ##  圆扇形的终止角的角度。
+    ##
+    ##  radius
+    ##
+    ##  圆扇形的半径。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc putpixel*(x: cint; y: cint; color: color_t; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画点。
+    ##
+    ## **参数**
+    ##  x
+    ##
+    ##  点的 x 坐标。
+    ##
+    ##  y
+    ##
+    ##  点的 y 坐标。
+    ##
+    ##  color
+    ##
+    ##  点的颜色。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##  其它说明：另有高速版的putpixel_f函数，参数一样，作用一样，但不进行相对坐标变换和边界检查（如果越界绘图，要么画错地方，要么程序结果莫名其妙，甚至直接崩溃），并且必须在窗口锁定绘图模式下才能使用，否则将发生不可预知的结果。
+    ##
+    ##
+    ##
+    ##
+
+proc putpixels*(nPoint: cint; pPoints: ptr cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画多个点。
+    ##
+    ## **参数**
+    ##  nPoint
+    ##
+    ##  点的数目。
+    ##
+    ##  pPoints
+    ##
+    ##  指向点的描述的指针，一个int型的数组，依次每三个int描述一个点：第一个为x坐标，第二个为y坐标，第三个为颜色值。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##  其它说明：另有高速版的putpixels_f函数，参数一样，作用一样，但不进行相对坐标变换和边界检查（如果越界绘图，要么画错地方，要么程序结果莫名其妙，甚至直接崩溃），并且必须在窗口锁定绘图模式下才能使用，否则将发生不可预知的结果。
+    ##
+    ##
+    ##
+    ##
+
+proc rectangle*(left: cint; top: cint; right: cint; bottom: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画空心矩形。
+    ##
+    ## **参数**
+    ##  left
+    ##
+    ##  矩形左部 x 坐标。
+    ##
+    ##  top
+    ##
+    ##  矩形上部 y 坐标。
+    ##
+    ##  right
+    ##
+    ##  矩形右部 x 坐标。
+    ##
+    ##  bottom
+    ##
+    ##  矩形下部 y 坐标。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc sector*(x: cint; y: cint; stangle: cint; endangle: cint; xradius: cint; yradius: cint;
+            pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+proc sectorf*(x: cfloat; y: cfloat; stangle: cfloat; endangle: cfloat; xradius: cfloat;
+             yradius: cfloat; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于画填充椭圆扇形。
+    ##
+    ## **参数**
+    ##  x
+    ##
+    ##  椭圆扇形的圆心 x 坐标。
+    ##
+    ##  y
+    ##
+    ##  椭圆扇形的圆心 y 坐标。
+    ##
+    ##  stangle
+    ##
+    ##  椭圆扇形的起始角的角度。
+    ##
+    ##  endangle
+    ##
+    ##  椭圆扇形的终止角的角度。
+    ##
+    ##  xradius
+    ##
+    ##  椭圆扇形的 x 轴半径。
+    ##
+    ##  yradius
+    ##
+    ##  椭圆扇形的 y 轴半径。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+
+
+proc setfillstyle*(pattern: cint; color: color_t; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于设置当前填充类型。该函数的自定义填充部分尚不支持。
+    ##
+    ## **参数**
+    ##  pattern
+    ##
+    ##  填充类型，可以是以下宏或值：
+    ##
+    ##  宏值含义
+    ##
+    ##  NULL_FILL1不填充
+    ##
+    ##  SOLID_FILL2固实填充
+    ##
+    ##  pupattern
+    ##
+    ##  color
+    ##
+    ##  填充颜色。
+    ##
+    ##  指定图案填充时的样式，目前无作用。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  设置蓝色固实填充：
+    ##
+    ##  setfillstyle(SOLID_FILL, BLUE);
+    ##
+    ##
+    ##
+    ##
+
+proc setlinestyle*(linestyle: cint; upattern: cushort = 0; thickness: cint = 1;
+                  pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于设置当前线形。
+    ##
+    ## **参数**
+    ##  linestyle
+    ##
+    ##  线型，可以是以下值：
+    ##
+    ##  值含义
+    ##
+    ##  SOLID_LINE线形为实线。
+    ##
+    ##  CENTER_LINE线形为：－－－－－－－－－－－－
+    ##
+    ##  DOTTED_LINE线形为：●●●●●●●●●●●●
+    ##
+    ##  DASHED_LINE线形为：－●－●－●－●－●－●
+    ##
+    ##  NULL_LINE线形为不可见。
+    ##
+    ##  USERBIT_LINE线形样式是自定义的，依赖于 upattern 参数。
+    ##
+    ##  upattern
+    ##
+    ##  自定义线形数据。
+    ##
+    ##  自定义规则：该数据为 WORD 类型，共 16 个二进制位，每位为 1 表示画线，为 0 表示空白。从低位到高位表示从起始到终止的方向。
+    ##
+    ##  仅当线型为 PS_USERSTYLE 时该参数有效。
+    ##
+    ##  thickness
+    ##
+    ##  线形宽度。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  设置线形为点划线： setlinestyle(PS_DASHDOT);
+    ##
+    ##  设置线形为宽度 3 像素的虚线： setlinestyle(PS_DASH, NULL, 3);
+    ##
+    ##
+    ##
+    ##
+
+proc setlinewidth*(thickness: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于设置当前线宽。
+    ##
+    ## **参数**
+    ##  thickness
+    ##
+    ##  线形宽度。
+    ##
+    ##
+    ## **返回值**
+    ##
+    ## **示例**
+    ##
+    ##
+    ##
+
+proc setwritemode*(mode: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于设置绘图位操作模式。
+    ##
+    ## **参数**
+    ##  mode
+    ##
+    ##  二元光栅操作码（即位操作模式），支持全部的 16 种二元光栅操作码，罗列如下：
+    ##
+    ##  位操作模式描述
+    ##
+    ##  R2_BLACK绘制出的像素颜色 = 黑色
+    ##
+    ##  R2_COPYPEN绘制出的像素颜色 = 当前颜色（默认）
+    ##
+    ##  R2_MASKNOTPEN绘制出的像素颜色 = 屏幕颜色 AND (NOT 当前颜色)
+    ##
+    ##  R2_MASKPEN绘制出的像素颜色 = 屏幕颜色 AND 当前颜色
+    ##
+    ##  R2_MASKPENNOT绘制出的像素颜色 = (NOT 屏幕颜色) AND 当前颜色
+    ##
+    ##  R2_MERGENOTPEN绘制出的像素颜色 = 屏幕颜色 OR (NOT 当前颜色)
+    ##
+    ##  R2_MERGEPEN绘制出的像素颜色 = 屏幕颜色 OR 当前颜色
+    ##
+    ##  R2_MERGEPENNOT绘制出的像素颜色 = (NOT 屏幕颜色) OR 当前颜色
+    ##
+    ##  R2_NOP绘制出的像素颜色 = 屏幕颜色
+    ##
+    ##  R2_NOT绘制出的像素颜色 = NOT 屏幕颜色
+    ##
+    ##  R2_NOTCOPYPEN绘制出的像素颜色 = NOT 当前颜色
+    ##
+    ##  R2_NOTMASKPEN绘制出的像素颜色 = NOT (屏幕颜色 AND 当前颜色)
+    ##
+    ##  R2_NOTMERGEPEN绘制出的像素颜色 = NOT (屏幕颜色 OR 当前颜色)
+    ##
+    ##  R2_NOTXORPEN绘制出的像素颜色 = NOT (屏幕颜色 XOR 当前颜色)
+    ##
+    ##  R2_WHITE绘制出的像素颜色 = 白色
+    ##
+    ##  R2_XORPEN绘制出的像素颜色 = 屏幕颜色 XOR 当前颜色
+    ##
+    ##  注：1. AND / OR / NOT / XOR 为布尔位运算。2. "屏幕颜色"指绘制所经过的屏幕像素点的颜色。3. "当前颜色"是指通过 setcolor 设置的用于当前绘制的颜色。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
 
 when isMainModule:
     initgraph(640,480)
