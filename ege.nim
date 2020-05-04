@@ -22,16 +22,16 @@ const
     SHOWCONSOLE* = 1
     LF_FACESIZE* = 32
     SRCCOPY* = cast[culong](0x00CC0020)
-    SRCPAINT* = cast[culong](0x00EE0086)
+    SRCPAcint* = cast[culong](0x00EE0086)
     SRCAND* = cast[culong](0x008800C6)
     SRCINVERT* = cast[culong](0x00660046)
     SRCERASE* = cast[culong](0x00440328)
     NOTSRCCOPY* = cast[culong](0x00330008)
     NOTSRCERASE* = cast[culong](0x001100A6)
     MERGECOPY* = cast[culong](0x00C000CA)
-    MERGEPAINT* = cast[culong](0x00BB0226)
+    MERGEPAcint* = cast[culong](0x00BB0226)
     PATCOPY* = cast[culong](0x00F00021)
-    PATPAINT* = cast[culong](0x00FB0A09)
+    PATPAcint* = cast[culong](0x00FB0A09)
     PATINVERT* = cast[culong](0x005A0049)
     DSTINVERT* = cast[culong](0x00550009)
     BLACKNESS* = cast[culong](0x00000042)
@@ -142,6 +142,49 @@ type
         lfQuality*: byte
         lfPitchAndFamily*: byte
         lfFaceName*: array[LF_FACESIZE, char]
+        
+    key_msg* {.bycopy.} = object
+        ## 这个结构体用于保存键盘消息
+        msg*: cuint
+        key*: cuint
+        flags*: cuint
+
+    mouse_msg* {.bycopy.} = object
+        ## 这个结构体用于保存鼠标消息
+        msg*: cuint
+        x*: cint
+        y*: cint
+        flags*: cuint
+        wheel*: cint
+
+    MOUSEMSG* {.bycopy.} = object
+        ## 这个结构体用于保存鼠标消息
+        ##  当前鼠标消息
+        ##
+        ##  Ctrl 键是否按下
+        ##
+        ##  Shift 键是否按下
+        ##
+        ##  鼠标左键是否按下
+        ##
+        ##  鼠标中键是否按下
+        ##
+        ##  鼠标右键是否按下
+        ##
+        ##  当前鼠标 x 坐标
+        ##
+        ##  当前鼠标 y 坐标
+        ##
+        ##  鼠标滚轮滚动值
+        uMsg*: cuint                    
+        mkCtrl*: cint                  
+        mkShift*: cint                 
+        mkLButton*: cint               
+        mkMButton*: cint               
+        mkRButton*: cint               
+        x*: cint                       
+        y*: cint                       
+        wheel*: cint                   
 
 # environment
 # 绘图环境相关函数
@@ -829,19 +872,7 @@ proc setfontbkcolor*(color: COLORS; pimg: PIMAGE = nil)=
     
 
 
-proc getch*():cint{.importc:"getch", header:"graphics.h", cdecl.}
-    ## 这个函数用于获取键盘字符输入，如果当前没有输入，则等待。
-    ## 
-    ## This function is used to get keyboard character input and to wait if none is currently entered.
-    ## 
-    ## **返回值**
-    ## 
-    ##  如果存在键盘字符输入，返回按键键码；否则不返回一直等待。
-    ## 
-    ## **return**
-    ## 
-    ##  If there is keyboard character input, return the key code;Otherwise do not return and wait.
-    ## 
+#绘图
     
 proc arc*(x: cint; y: cint; stangle: cint; endangle: cint; radius: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
 proc arcf*(x: cfloat; y: cfloat; stangle: cfloat; endangle: cfloat; radius: cfloat;
@@ -2491,7 +2522,7 @@ proc putimage*(pDstImg: PIMAGE; dstX: cint; dstY: cint; dstWidth: cint; dstHeigh
     ##
     ##  MERGECOPY绘制出的像素颜色 = 图像颜色 AND 当前填充颜色
     ##
-    ##  MERGEPAINT绘制出的像素颜色 = 屏幕颜色 OR (NOT 图像颜色)
+    ##  MERGEPAcint绘制出的像素颜色 = 屏幕颜色 OR (NOT 图像颜色)
     ##
     ##  NOTSRCCOPY绘制出的像素颜色 = NOT 图像颜色
     ##
@@ -2501,7 +2532,7 @@ proc putimage*(pDstImg: PIMAGE; dstX: cint; dstY: cint; dstWidth: cint; dstHeigh
     ##
     ##  PATINVERT绘制出的像素颜色 = 屏幕颜色 XOR 当前填充颜色
     ##
-    ##  PATPAINT绘制出的像素颜色 = 屏幕颜色 OR ((NOT 图像颜色) OR 当前填充颜色)
+    ##  PATPAcint绘制出的像素颜色 = 屏幕颜色 OR ((NOT 图像颜色) OR 当前填充颜色)
     ##
     ##  SRCAND绘制出的像素颜色 = 屏幕颜色 AND 图像颜色
     ##
@@ -2511,7 +2542,7 @@ proc putimage*(pDstImg: PIMAGE; dstX: cint; dstY: cint; dstWidth: cint; dstHeigh
     ##
     ##  SRCINVERT绘制出的像素颜色 = 屏幕颜色 XOR 图像颜色
     ##
-    ##  SRCPAINT绘制出的像素颜色 = 屏幕颜色 OR 图像颜色
+    ##  SRCPAcint绘制出的像素颜色 = 屏幕颜色 OR 图像颜色
     ##
     ##  注：1. AND / OR / NOT / XOR 为布尔位运算。2. "屏幕颜色"指绘制所经过的屏幕像素点的颜色。3. "图像颜色"是指通过 IMAGE 对象中的图像的颜色。4. "当前填充颜色"是指通过 setfillstyle 设置的用于当前填充的颜色。5. 查看全部的三元光栅操作码请详见：三元光栅操作码。
     ##
@@ -2694,6 +2725,195 @@ proc putimage_transparent*(imgdest: PIMAGE; imgsrc: PIMAGE; nXOriginDest: cint;
     ##
     ##
     ##
+
+#输入
+proc getch*():cint{.importc:"getch", header:"graphics.h", cdecl.}
+    ## 这个函数用于获取键盘字符输入，如果当前没有输入，则等待。
+    ## 
+    ## This function is used to get keyboard character input and to wait if none is currently entered.
+    ## 
+    ## **返回值**
+    ## 
+    ##  如果存在键盘字符输入，返回按键键码；否则不返回一直等待。
+    ## 
+    ## **return**
+    ## 
+    ##  If there is keyboard character input, return the key code;Otherwise do not return and wait.
+    ## 
+    
+proc keystate*(key: cint): cint {.importc:"getch", header:"graphics.h", cdecl.}
+    ## 这个函数用于判断某按键是否被按下。
+   
+proc FlushMouseMsgBuffer*() {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于清空鼠标消息缓冲区。
+    ##
+    ## **参数**
+    ##  （无）
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc getkey*(): key_msg {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于获取键盘消息，如果当前没有消息，则等待。
+    ##
+    ## **参数**
+    ##  （无）
+    ##
+    ##
+    ## **返回值**
+    ##  返回 key_msg 结构体
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc getmouse*(): mouse_msg {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于获取一个鼠标消息。如果当前鼠标消息队列中没有，就一直等待。
+    ##
+    ## **参数**
+    ##  （无）
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc GetMouseMsg*(): MOUSEMSG {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于获取一个鼠标消息。如果当前鼠标消息队列中没有，就一直等待。
+    ##
+    ## **参数**
+    ##  （无）
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc kbhit*(): cint {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于检测当前是否有键盘字符输入。
+    ##
+    ## **参数**
+    ##  （无）
+    ##
+    ##
+    ## **返回值**
+    ##  如果存在键盘字符输入，返回 1；否则返回 0。
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc kbmsg*(): cint {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于检测当前是否有键盘消息。
+    ##
+    ## **参数**
+    ##  （无）
+    ##
+    ##
+    ## **返回值**
+    ##  如果存在键盘消息，返回 1；否则返回 0。
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc hasMouseMsg*(): cint {.importc:"mousemsg", header:"graphics.h", cdecl.}
+    ## 这个函数用于检测当前是否有鼠标消息。
+    ##
+    ## **参数**
+    ##  （无）
+    ##
+    ##
+    ## **返回值**
+    ##  如果存在鼠标消息，返回 1；否则返回 0。
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc mousepos*(x: ptr cint; y: ptr cint): cint {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于获取当前鼠标坐标。
+    ##
+    ## **参数**
+    ##  x
+    ##
+    ##  用来接收横坐标
+    ##
+    ##  y
+    ##
+    ##  用来接收纵坐标
+    ##
+    ##
+    ## **返回值**
+    ##  0
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc showmouse*(bShow: cint): cint {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于检测设置鼠标隐藏。
+    ##
+    ## **参数**
+    ##  bShow
+    ##
+    ##  为0则不显示，非0为显示。默认显示。
+    ##
+    ##
+    ## **返回值**
+    ##  返回上一次调用时设置的值，第一次调用的话返回1。
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+    
 
 
 when isMainModule:
