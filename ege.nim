@@ -2914,6 +2914,120 @@ proc showmouse*(bShow: cint): cint {.importc, header:"graphics.h", cdecl.}
     ##
     ##
     
+proc api_sleep*(dwMilliseconds: clong) {.importc, header:"graphics.h", cdecl.}
+    ## 与Sleep函数完全相同，单纯延迟指定时间（精确程度由系统API决定），其它事情什么都不干。
+    ##
+    ## **参数**
+    ##  dwMilliseconds
+    ##
+    ##  要延迟的时间，以毫秒为单位，如果为0则不产生延时的作用（相当于无意义调用）。不会附带刷新窗口的作用。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc delay*(Milliseconds: clong)  {.importc, header:"graphics.h", cdecl.}
+    ## 至少延迟以毫秒为单位的时间。
+    ##
+    ## **参数**
+    ##  Milliseconds
+    ##
+    ##  要延迟的时间，以毫秒为单位
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc delay_fps*(fps: clong)  {.importc, header:"graphics.h", cdecl.}
+proc delay_fps*(fps: cdouble)  {.importc, header:"graphics.h", cdecl.}
+    ## 延迟以FPS为准的时间，以实现稳定帧率。
+    ##
+    ## **参数**
+    ##  fps
+    ##
+    ##  要得到的帧率，平均延迟1000/fps毫秒,并更新FPS计数值。这个函数一秒最多能调用fps次。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc delay_jfps*(fps: clong)  {.importc, header:"graphics.h", cdecl.}
+proc delay_jfps*(fps: cdouble)  {.importc, header:"graphics.h", cdecl.}
+    ## 延迟以FPS为准的时间，以实现稳定帧率（带跳帧）。
+    ##
+    ## **参数**
+    ##  fps
+    ##
+    ##  要得到的帧率，平均延迟1000/fps毫秒,并更新FPS计数值。这个函数一秒最多能调用fps次。注意的是，即使这帧跳过了，仍然会更新FPS计数值。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc delay_ms*(Milliseconds: clong)  {.importc, header:"graphics.h", cdecl.}
+    ## 平均延迟以毫秒为单位的时间。
+    ##
+    ## **参数**
+    ##  Milliseconds
+    ##
+    ##  要延迟的时间，以毫秒为单位
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+
+proc fclock*(): cdouble  {.importc, header:"graphics.h", cdecl.}
+    ## 获取当前程序从初始化起经过的时间，以秒为单位
+    ##
+    ## **参数**
+    ##  （无）
+    ##
+    ##
+    ## **返回值**
+    ##  返回一个以秒为单位的浮点数，精度比API的GetTickCount稍高。程序中使用一般用于求时间差，一般不要直接使用这个值。
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+
 
 
 when isMainModule:
