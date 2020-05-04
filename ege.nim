@@ -21,6 +21,21 @@ const
     CW_USEDEFAULT* = (cast[cint](0x80000000))
     SHOWCONSOLE* = 1
     LF_FACESIZE* = 32
+    SRCCOPY* = cast[culong](0x00CC0020)
+    SRCPAINT* = cast[culong](0x00EE0086)
+    SRCAND* = cast[culong](0x008800C6)
+    SRCINVERT* = cast[culong](0x00660046)
+    SRCERASE* = cast[culong](0x00440328)
+    NOTSRCCOPY* = cast[culong](0x00330008)
+    NOTSRCERASE* = cast[culong](0x001100A6)
+    MERGECOPY* = cast[culong](0x00C000CA)
+    MERGEPAINT* = cast[culong](0x00BB0226)
+    PATCOPY* = cast[culong](0x00F00021)
+    PATPAINT* = cast[culong](0x00FB0A09)
+    PATINVERT* = cast[culong](0x005A0049)
+    DSTINVERT* = cast[culong](0x00550009)
+    BLACKNESS* = cast[culong](0x00000042)
+    WHITENESS* = cast[culong](0x00FF0062)
 
 template RGBTOBGR*(color: untyped): untyped =
   ((((color) and 0x000000FF) shl 16) or (((color) and 0x00FF0000) shr 16) or
@@ -2302,6 +2317,379 @@ proc xyprintf*(x: cint; y: cint; textstring: WideCString) {.varargs, importc, he
     ##
     ## **示例**
     ##  无
+    ##
+    ##
+    ##
+    ##
+
+proc newimage*(width: cint; height: cint): PIMAGE {.importc, header:"graphics.h", cdecl.}
+proc delimage*(pImg: PIMAGE) {.importc, header:"graphics.h", cdecl.}
+proc getimage*(pDstImg: PIMAGE; srcX: cint; srcY: cint; srcWidth: cint; srcHeight: cint) {.importc, header:"graphics.h", cdecl.}
+    ##  保存图像的 IMAGE 对象指针
+    ##  要获取图像的区域左上角 x 坐标
+    ##  要获取图像的区域左上角 y 坐标
+    ##  要获取图像的区域宽度
+    ##  要获取图像的区域高度
+    ##  从图片文件获取图像(png/bmp/jpg/gif/emf/wmf/ico)
+
+proc getimage*(pDstImg: PIMAGE; pImgFile: cstring; zoomWidth: cint = 0;
+              zoomHeight: cint = 0) {.importc, header:"graphics.h", cdecl.}
+    ##  保存图像的 IMAGE 对象指针
+    ##  图片文件名
+    ##  设定图像缩放至的宽度（0 表示默认宽度，不缩放）
+    ##  从资源文件获取图像(png/bmp/jpg/gif/emf/wmf/ico)
+
+proc getimage*(pDstImg: PIMAGE; pResType: cstring; pResName: cstring;
+              zoomWidth: cint = 0; zoomHeight: cint = 0) {.importc, header:"graphics.h", cdecl.}
+    ##  保存图像的 IMAGE 对象指针
+    ##  资源类型
+    ##  资源名称
+    ##  设定图像缩放至的宽度（0 表示默认宽度，不缩放）
+    ##  从另一个 IMAGE 对象中获取图像
+
+proc getimage*(pDstImg: PIMAGE; pSrcImg: ptr IMAGE; srcX: cint; srcY: cint;
+              srcWidth: cint; srcHeight: cint) {.importc, header:"graphics.h", cdecl.}
+    ##  保存图像的 IMAGE 对象指针
+    ##  源图像 IMAGE 对象
+    ##  要获取图像的区域左上角 x 坐标
+    ##  要获取图像的区域左上角 y 坐标
+    ##  要获取图像的区域宽度
+    ##  要获取图像的区域高度
+    ##
+    ## 这个函数的四个重载分别用于从屏幕 / 文件 / 资源 / IMAGE 对象中获取图像
+    ##
+    ## **参数**
+    ##  pimg
+    ##
+    ##  （详见各重载函数原型内的注释）
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  请参考 putimage 函数示例。
+    ##
+    ##
+    ##
+    ##
+
+proc imagefilter_blurring*(imgdest: PIMAGE; intensity: cint; alpha: cint;
+                          nXOriginDest: cint = 0; nYOriginDest: cint = 0;
+                          nWidthDest: cint = 0; nHeightDest: cint = 0): cint {.importc, header:"graphics.h", cdecl.} 
+    ##
+    ## 这个函数用于对一图片区域进行模糊滤镜操作
+    ##
+    ## **参数**
+    ##  imgdest
+    ##
+    ##  要进行模糊操作的图片，如果为NULL则表示操作窗口上的图片
+    ##
+    ##  intensity
+    ##
+    ##  模糊度，值越大越模糊。当值在 0x0 - 0x7F之间时，为四向模糊；当值在 0x80 - 0xFF之间时，为八向模糊，运算量会大一倍
+    ##
+    ##  alpha
+    ##
+    ##  图像亮度。取值为0x100表示亮度不变，取值为0x0表示图像变成纯黑
+    ##
+    ##  nXOriginDest, nYOriginDest, nWidthDest, nHeightDest
+    ##
+    ##  描述要进行此操作的矩形区域。如果nWidthDest和nHeightDest 为0，表示操作整张图片。
+    ##
+    ##
+    ## **返回值**
+    ##  成功返回0，否则返回非0，若imgdest传入错误，会引发运行时异常。
+    ##
+    ##
+    ## **示例**
+    ##  （无）。
+    ##
+    ##
+    ##
+    ##
+    ##  绘制图像到屏幕
+
+proc putimage*(dstX: cint; dstY: cint; pSrcImg: PIMAGE; dwRop: culong = SRCCOPY) {.importc, header:"graphics.h", cdecl.}
+    ##  绘制位置的 x 坐标
+    ##  绘制位置的 y 坐标
+    ##  要绘制的 IMAGE 对象指针
+    ##  绘制图像到屏幕(指定宽高)
+
+proc putimage*(dstX: cint; dstY: cint; dstWidth: cint; dstHeight: cint; pSrcImg: PIMAGE;
+              srcX: cint; srcY: cint; dwRop: culong = SRCCOPY)  {.importc, header:"graphics.h", cdecl.}
+    ##  绘制位置的 x 坐标
+    ##  绘制位置的 y 坐标
+    ##  绘制的宽度
+    ##  绘制的高度
+    ##  要绘制的 IMAGE 对象指针
+    ##  绘制内容在 IMAGE 对象中的左上角 x 坐标
+    ##  绘制内容在 IMAGE 对象中的左上角 y 坐标
+    ##  绘制图像到屏幕(拉伸)
+
+proc putimage*(dstX: cint; dstY: cint; dstWidth: cint; dstHeight: cint; pSrcImg: PIMAGE;
+              srcX: cint; srcY: cint; srcWidth: cint; srcHeight: cint;
+              dwRop: culong = SRCCOPY)  {.importc, header:"graphics.h", cdecl.}
+    ##  绘制位置的 x 坐标
+    ##  绘制位置的 y 坐标
+    ##  绘制的宽度
+    ##  绘制的高度
+    ##  要绘制的 IMAGE 对象指针
+    ##  绘制内容在 IMAGE 对象中的左上角 x 坐标
+    ##  绘制内容在 IMAGE 对象中的左上角 y 坐标
+    ##  绘制内容在源 IMAGE 对象中的宽度
+    ##  绘制内容在源 IMAGE 对象中的高度
+    ##  绘制图像到另一图像
+
+proc putimage*(pDstImg: PIMAGE; dstX: cint; dstY: cint; pSrcImg: PIMAGE;
+              dwRop: culong = SRCCOPY)  {.importc, header:"graphics.h", cdecl.}
+    ##  目标 IMAGE 对象指针
+    ##  绘制位置的 x 坐标
+    ##  绘制位置的 y 坐标
+    ##  源 IMAGE 对象指针
+    ##  绘制图像到另一图像(指定宽高)
+
+proc putimage*(pDstImg: PIMAGE; dstX: cint; dstY: cint; dstWidth: cint; dstHeight: cint;
+              pSrcImg: PIMAGE; srcX: cint; srcY: cint; dwRop: culong = SRCCOPY)  {.importc, header:"graphics.h", cdecl.}
+    ##  目标 IMAGE 对象指针
+    ##  绘制位置的 x 坐标
+    ##  绘制位置的 y 坐标
+    ##  绘制的宽度
+    ##  绘制的高度
+    ##  源 IMAGE 对象指针
+    ##  绘制内容在源 IMAGE 对象中的左上角 x 坐标
+    ##  绘制内容在源 IMAGE 对象中的左上角 y 坐标
+    ##  绘制图像到另一图像(拉伸)
+
+proc putimage*(pDstImg: PIMAGE; dstX: cint; dstY: cint; dstWidth: cint; dstHeight: cint;
+              pSrcImg: PIMAGE; srcX: cint; srcY: cint; srcWidth: cint; srcHeight: cint;
+              dwRop: culong = SRCCOPY)  {.importc, header:"graphics.h", cdecl.}
+    ##  目标 IMAGE 对象指针
+    ##  绘制位置的 x 坐标
+    ##  绘制位置的 y 坐标
+    ##  绘制的宽度
+    ##  绘制的高度
+    ##  源 IMAGE 对象指针
+    ##  绘制内容在源 IMAGE 对象中的左上角 x 坐标
+    ##  绘制内容在源 IMAGE 对象中的左上角 y 坐标
+    ##  绘制内容在源 IMAGE 对象中的宽度
+    ##  绘制内容在源 IMAGE 对象中的高度
+    ##
+    ## 这个函数的几个重载用于在屏幕或另一个图像上绘制指定图像。
+    ##
+    ## **参数**
+    ##  （详见各重载函数原型内的注释）
+    ##
+    ##  备注：
+    ##
+    ##  三元光栅操作码（即位操作模式），支持全部的 256 种三元光栅操作码，常用的几种如下：
+    ##
+    ##  值含义
+    ##
+    ##  DSTINVERT绘制出的像素颜色 = NOT 屏幕颜色
+    ##
+    ##  MERGECOPY绘制出的像素颜色 = 图像颜色 AND 当前填充颜色
+    ##
+    ##  MERGEPAINT绘制出的像素颜色 = 屏幕颜色 OR (NOT 图像颜色)
+    ##
+    ##  NOTSRCCOPY绘制出的像素颜色 = NOT 图像颜色
+    ##
+    ##  NOTSRCERASE绘制出的像素颜色 = NOT (屏幕颜色 OR 图像颜色)
+    ##
+    ##  PATCOPY绘制出的像素颜色 = 当前填充颜色
+    ##
+    ##  PATINVERT绘制出的像素颜色 = 屏幕颜色 XOR 当前填充颜色
+    ##
+    ##  PATPAINT绘制出的像素颜色 = 屏幕颜色 OR ((NOT 图像颜色) OR 当前填充颜色)
+    ##
+    ##  SRCAND绘制出的像素颜色 = 屏幕颜色 AND 图像颜色
+    ##
+    ##  SRCCOPY绘制出的像素颜色 = 图像颜色
+    ##
+    ##  SRCERASE绘制出的像素颜色 = (NOT 屏幕颜色) AND 图像颜色
+    ##
+    ##  SRCINVERT绘制出的像素颜色 = 屏幕颜色 XOR 图像颜色
+    ##
+    ##  SRCPAINT绘制出的像素颜色 = 屏幕颜色 OR 图像颜色
+    ##
+    ##  注：1. AND / OR / NOT / XOR 为布尔位运算。2. "屏幕颜色"指绘制所经过的屏幕像素点的颜色。3. "图像颜色"是指通过 IMAGE 对象中的图像的颜色。4. "当前填充颜色"是指通过 setfillstyle 设置的用于当前填充的颜色。5. 查看全部的三元光栅操作码请详见：三元光栅操作码。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  以下局部代码读取 c:\test.jpg 绘制在屏幕左上角：
+    ##
+    ##  PIMAGE img = newimage();
+    ##
+    ##  getimage(img, "c:\\test.jpg");
+    ##
+    ##  putimage(0, 0, img);
+    ##
+    ##  delimage(img);
+    ##
+    ##  以下局部代码将屏幕 (0,0) 起始的长宽各 100 像素的图像拷贝至 (200,200) 位置：
+    ##
+    ##  PIMAGE img = newimage();
+    ##
+    ##  getimage(img, 0, 0, 100, 100);
+    ##
+    ##  putimage(200, 200, img);
+    ##
+    ##  delimage(img);
+    ##
+    ##
+    ##
+    ##
+
+proc putimage_alphablend*(imgdest: PIMAGE; imgsrc: PIMAGE; nXOriginDest: cint;
+                         nYOriginDest: cint; alpha: cuchar; nXOriginSrc: cint = 0;
+                         nYOriginSrc: cint = 0; nWidthSrc: cint = 0;
+                         nHeightSrc: cint = 0): cint  {.importc, header:"graphics.h", cdecl.}
+    ##  handle to dest
+    ##  handle to source
+    ##  x-coord of destination upper-left corner
+    ##  y-coord of destination upper-left corner
+    ##  alpha
+    ##  x-coord of source upper-left corner
+    ##  y-coord of source upper-left corner
+    ##  width of source rectangle
+    ##
+    ## 这个函数用于对两张图片进行半透明混合，并把混合结果写入目标图片。
+    ##
+    ## **参数**
+    ##  imgdest
+    ##
+    ##  要进行半透明混合的目标图片，如果为NULL则表示操作窗口上的图片
+    ##
+    ##  imgsrc
+    ##
+    ##  要进行半透明混合的源图片，该操作不会改变源图片
+    ##
+    ##  nXOriginDest, nYOriginDest
+    ##
+    ##  要开始进行混合的目标图片坐标，该坐标是混合区域的左上角
+    ##
+    ##  alpha
+    ##
+    ##  透明度值，如果为0x0，表示源图片完全透明，如果为0xFF，表示源图片完全不透明。
+    ##
+    ##  nXOriginDest, nYOriginDest, nWidthDest, nHeightDest
+    ##
+    ##  描述要进行此操作的源图矩形区域。如果nWidthDest和nHeightDest 为0，表示操作整张图片。
+    ##
+    ##
+    ## **返回值**
+    ##  成功返回0，否则返回非0，若imgdest或imgsrc传入错误，会引发运行时异常。
+    ##
+    ##
+    ## **示例**
+    ##  （无）。
+    ##
+    ##
+    ##
+    ##
+
+proc putimage_alphatransparent*(imgdest: PIMAGE; imgsrc: PIMAGE; nXOriginDest: cint;
+                               nYOriginDest: cint; crTransparent: color_t;
+                               alpha: cuchar; nXOriginSrc: cint = 0;
+                               nYOriginSrc: cint = 0; nWidthSrc: cint = 0;
+                               nHeightSrc: cint = 0): cint  {.importc, header:"graphics.h", cdecl.}
+    ##  handle to dest
+    ##  handle to source
+    ##  x-coord of destination upper-left corner
+    ##  y-coord of destination upper-left corner
+    ##  color to make transparent
+    ##  alpha
+    ##  x-coord of source upper-left corner
+    ##  y-coord of source upper-left corner
+    ##  width of source rectangle
+    ##
+    ## 这个函数用于对两张图片进行透明/半透明混合，并把混合结果写入目标图片。
+    ##
+    ## **参数**
+    ##  imgdest
+    ##
+    ##  要进行半透明混合的目标图片，如果为NULL则表示操作窗口上的图片
+    ##
+    ##  imgsrc
+    ##
+    ##  要进行半透明混合的源图片，该操作不会改变源图片
+    ##
+    ##  nXOriginDest, nYOriginDest
+    ##
+    ##  要开始进行混合的目标图片坐标，该坐标是混合区域的左上角
+    ##
+    ##  crTransparent
+    ##
+    ##  关键色。源图片上为该颜色值的像素，将忽略，不会改写目标图片上相应位置的像素。
+    ##
+    ##  alpha
+    ##
+    ##  透明度值，如果为0x0，表示源图片完全透明，如果为0xFF，表示源图片完全不透明。
+    ##
+    ##  nXOriginDest, nYOriginDest, nWidthDest, nHeightDest
+    ##
+    ##  描述要进行此操作的源图矩形区域。如果nWidthDest和nHeightDest 为0，表示操作整张图片。
+    ##
+    ##
+    ## **返回值**
+    ##  成功返回0，否则返回非0，若imgdest或imgsrc传入错误，会引发运行时异常。
+    ##
+    ##
+    ## **示例**
+    ##  （无）。
+    ##
+    ##
+    ##
+    ##
+
+proc putimage_transparent*(imgdest: PIMAGE; imgsrc: PIMAGE; nXOriginDest: cint;
+                          nYOriginDest: cint; crTransparent: color_t;
+                          nXOriginSrc: cint = 0; nYOriginSrc: cint = 0;
+                          nWidthSrc: cint = 0; nHeightSrc: cint = 0): cint  {.importc, header:"graphics.h", cdecl.}
+    ##  handle to dest
+    ##  handle to source
+    ##  x-coord of destination upper-left corner
+    ##  y-coord of destination upper-left corner
+    ##  color to make transparent
+    ##  x-coord of source upper-left corner
+    ##  y-coord of source upper-left corner
+    ##  width of source rectangle
+    ##
+    ## 这个函数用于对两张图片进行透明混合，并把混合结果写入目标图片。
+    ##
+    ## **参数**
+    ##  imgdest
+    ##
+    ##  要进行透明混合的目标图片，如果为NULL则表示操作窗口上的图片
+    ##
+    ##  imgsrc
+    ##
+    ##  要进行透明混合的源图片，该操作不会改变源图片
+    ##
+    ##  nXOriginDest, nYOriginDest
+    ##
+    ##  要开始进行混合的目标图片坐标，该坐标是混合区域的左上角
+    ##
+    ##  crTransparent
+    ##
+    ##  关键色。源图片上为该颜色值的像素，将忽略，不会改写目标图片上相应位置的像素。
+    ##
+    ##  nXOriginDest, nYOriginDest, nWidthDest, nHeightDest
+    ##
+    ##  描述要进行此操作的源图矩形区域。如果nWidthDest和nHeightDest 为0，表示操作整张图片。
+    ##
+    ##
+    ## **返回值**
+    ##  成功返回0，否则返回非0，若imgdest或imgsrc传入错误，会引发运行时异常。
+    ##
+    ##
+    ## **示例**
+    ##  （无）。
     ##
     ##
     ##
