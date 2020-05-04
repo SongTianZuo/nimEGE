@@ -3079,6 +3079,88 @@ proc randomize*() {.importc, header:"graphics.h", cdecl.}
     ##
     ##
 
+#其它
+#other
+proc getfps*(flag: cint = 1): cfloat {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于获取当前刷新率。
+    ##
+    ## **参数**
+    ##  flag
+    ##
+    ##  仅能为0或者1，如果为1，查询的是逻辑帧数；如果为0，查询的是渲染帧数。两者之差可以得到无效帧数（被跳过渲染的帧数，仅在调用delay_jfps会产生）。如果没有调用过delay_jfps，那么两者无区别。
+    ##
+    ##
+    ## **返回值**
+    ##  返回当前刷新率。
+    ##
+    ##  说明：
+    ##
+    ##  FPS（Frames Per Second）：每秒传输帧数。通常，这个帧数在动画或者游戏里，至少要达到30才能基本流畅。现代液晶显示器均使用60FPS的刷新率，所以，如果你希望在你的显示器上达到最佳效果，那你需要至少60FPS。
+    ##
+    ##  而使内部FPS计数增加的方式是当你绘图后，调用delay族函数，如：delay, delay_ms, delay_fps, Sleep，否则你不调用这些函数时，FPS永远为0而不会变化。
+    ##
+    ##
+    ## **示例**
+    ##  参见示例程序中的“星空”
+    ##
+    ##
+    ##
+    ##
+
+proc GetHWnd*(): clong {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于获取绘图窗口句柄。
+    ##
+    ## **参数**
+    ##  （无）
+    ##
+    ##
+    ## **返回值**
+    ##  返回绘图窗口句柄。
+    ##
+    ##  说明：
+    ##
+    ##  在 Windows 下，句柄是一个窗口的标识，得到句柄后，可以使用 Windows SDK 中的各种命令实现对窗口的控制。
+    ##
+    ##
+    ## **示例**
+    ##  // 获得窗口句柄
+    ##
+    ##  HWND hWnd = GetHWnd();
+    ##
+    ##  // 使用 API 函数修改窗口名称
+    ##
+    ##  SetWindowText(hWnd, TEXT("Hello!"));
+    ##
+    ##
+    ##
+    ##
+
+proc inputbox_getline*(title: cstring; text: cstring; buf: cstring; len: cint): cint {.importc, header:"graphics.h", cdecl.}
+proc inputbox_getline*(title: WideCString; text: WideCString; buf: WideCString; len: cint): cint {.importc, header:"graphics.h", cdecl.}
+    ## 使用对话框让用户输入一个字符串
+    ##
+    ## **参数**
+    ##  title
+    ##
+    ##  对话框标题
+    ##
+    ##  text
+    ##
+    ##  对话框内显示的提示文字，可以使用'\n'或者'\t'进行格式控制。
+    ##
+    ##  buf
+    ##
+    ##  用于接收输入的字符串指针，指向一个缓冲区
+    ##
+    ##  len
+    ##
+    ##  指定buf指向的缓冲区的大小，同时也会限制在对话框里输入的最大长度
+    ##
+    ##
+    ## **返回值**
+    ##  返回1表示输入有效，buf中的内容为用户所输入的数据，返回0表示输入无效，同时buf清空。
+    ##
+
 
 when isMainModule:
     initgraph(640,480)
