@@ -20,6 +20,7 @@ else:
 const
     CW_USEDEFAULT* = (cast[cint](0x80000000))
     SHOWCONSOLE* = 1
+    LF_FACESIZE* = 32
 
 template RGBTOBGR*(color: untyped): untyped =
   ((((color) and 0x000000FF) shl 16) or (((color) and 0x00FF0000) shr 16) or
@@ -107,6 +108,25 @@ type
         WHITE = EGERGB(0x000000FC, 0x000000FC, 0x000000FC)
         
     color_t* = cuint
+    
+    wchar* = distinct int16
+    
+    
+    LOGFONT* {.bycopy.} = object
+        lfHeight*: clong
+        lfWidth*: clong
+        lfEscapement*: clong
+        lfOrientation*: clong
+        lfWeight*: clong
+        lfItalic*: byte
+        lfUnderline*: byte
+        lfStrikeOut*: byte
+        lfCharSet*: byte
+        lfOutPrecision*: byte
+        lfClipPrecision*: byte
+        lfQuality*: byte
+        lfPitchAndFamily*: byte
+        lfFaceName*: array[LF_FACESIZE, char]
 
 # environment
 # 绘图环境相关函数
@@ -1869,6 +1889,419 @@ proc setwritemode*(mode: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h
     ##
     ## **示例**
     ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc getfont*(font: ptr LOGFONT; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于获取当前字体样式
+    ##
+    ## **参数**
+    ##  font
+    ##
+    ##  指向 LOGFONT 结构体的指针。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc outtext*(textstring: cstring; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+proc outtext*(c: char; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+proc outtext*(textstring: WideCString; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+proc outtext*(c: wchar; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于在当前位置输出字符串。
+    ##
+    ## **参数**
+    ##  textstring
+    ##
+    ##  要输出的字符串的指针。
+    ##
+    ##  c
+    ##
+    ##  要输出的字符。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  // 输出字符串
+    ##
+    ##  char s[] = "Hello World";
+    ##
+    ##  outtext(s);
+    ##
+    ##  // 输出字符
+    ##
+    ##  char c = 'A';
+    ##
+    ##  outtext(c);
+    ##
+    ##  // 输出数值，先将数字格式化输出为字符串
+    ##
+    ##  char s[5];
+    ##
+    ##  sprintf(s, "%d", 1024);
+    ##
+    ##  outtext(s);
+    ##
+    ##
+    ##
+    ##
+
+proc outtextrect*(x: cint; y: cint; w: cint; h: cint; textstring: cstring;
+                 pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+proc outtextrect*(x: cint; y: cint; w: cint; h: cint; textstring: WideCString;
+                 pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ##
+    ## 这个函数用于在指定矩形范围内输出字符串。
+    ##
+    ## **参数**
+    ##  x, y, w, h
+    ##
+    ##  要输出字符串所在的矩形区域
+    ##
+    ##  textstring
+    ##
+    ##  要输出的字符串的指针。
+    ##
+    ##
+    ## **返回值**
+    ##
+    ## **示例**
+    ##
+    ##
+    ##
+
+proc outtextxy*(x: cint; y: cint; textstring: cstring; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+proc outtextxy*(x: cint; y: cint; c: char; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+proc outtextxy*(x: cint; y: cint; textstring: WideCString; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+proc outtextxy*(x: cint; y: cint; c: wchar; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于在指定位置输出字符串。
+    ##
+    ## **参数**
+    ##  x
+    ##
+    ##  字符串输出时头字母的 x 轴的坐标值
+    ##
+    ##  y
+    ##
+    ##  字符串输出时头字母的 y 轴的坐标值。
+    ##
+    ##  textstring
+    ##
+    ##  要输出的字符串的指针。
+    ##
+    ##  c
+    ##
+    ##  要输出的字符。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  // 输出字符串
+    ##
+    ##  char s[] = "Hello World";
+    ##
+    ##  outtextxy(10, 20, s);
+    ##
+    ##  // 输出字符
+    ##
+    ##  char c = 'A';
+    ##
+    ##  outtextxy(10, 40, c);
+    ##
+    ##  // 输出数值，先将数字格式化输出为字符串
+    ##
+    ##  char s[5];
+    ##
+    ##  sprintf(s, "%d", 1024);
+    ##
+    ##  outtextxy(10, 60, s);
+    ##
+    ##
+    ##
+    ##
+
+proc xyprintf*(x: cint; y: cint; w: cint; h: cint; textstring: cstring) {.varargs, importc, header:"graphics.h", cdecl.}
+proc xyprintf*(x: cint; y: cint; w: cint; h: cint; textstring: WideCString) {.varargs, importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于在指定位置格式化输出字符串。
+    ##
+    ## **参数**
+    ##  x, y, w, h
+    ##
+    ##  要输出字符串所在的矩形区域
+    ##
+    ##  textstring
+    ##
+    ##  要输出的字符串的指针。
+    ##
+    ##  ...
+    ##
+    ##  要输出的内容的参数，类似printf。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  无
+    ##
+    ##
+    ##
+    ##
+
+proc setfont*(nHeight: cint; nWidth: cint; lpszFace: cstring; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+proc setfont*(nHeight: cint; nWidth: cint; lpszFace: cstring; nEscapement: cint;
+             nOrientation: cint; nWeight: cint; bItalic: bool; bUnderline: bool;
+             bStrikeOut: bool; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+proc setfont*(nHeight: cint; nWidth: cint; lpszFace: cstring; nEscapement: cint;
+             nOrientation: cint; nWeight: cint; bItalic: bool; bUnderline: bool;
+             bStrikeOut: bool; fbCharSet: byte; fbOutPrecision: byte;
+             fbClipPrecision: byte; fbQuality: byte; fbPitchAndFamily: byte;
+             pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+proc setfont*(font: ptr LOGFONT; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于设置当前字体样式。
+    ##
+    ## **参数**
+    ##  nHeight
+    ##
+    ##  指定高度（逻辑单位）。如果为正，表示指定的高度包括字体的默认行距；如果为负，表示指定的高度只是字符的高度。
+    ##
+    ##  nWidth
+    ##
+    ##  字符的平均宽度（逻辑单位）。如果为 0，则比例自适应。
+    ##
+    ##  lpszFace
+    ##
+    ##  字体名称。对于此参数均有cstring和WideCString两个版本，以上函数声明仅列出一种。提供两个接口是为了方便能同时使用两种不同的字符集。
+    ##
+    ##  常用的字体名称有：宋体，楷体_GB2312，隶书，黑体，幼圆，新宋体，仿宋_GB2312，Fixedsys，Arial，Times New Roman
+    ##
+    ##  具体可用名字，可查阅你系统已安装字体。
+    ##
+    ##  nEscapement
+    ##
+    ##  字符串的书写角度，单位 0.1 度。
+    ##
+    ##  nOrientation
+    ##
+    ##  每个字符的书写角度，单位 0.1 度。
+    ##
+    ##  nWeight
+    ##
+    ##  字符的笔画粗细，范围 0~1000。0 表示默认粗细。使用数字或下表中定义的宏均可：
+    ##
+    ##  宏粗细值
+    ##
+    ##  FW_DONTCARE0
+    ##
+    ##  FW_THIN100
+    ##
+    ##  FW_EXTRALIGHT200
+    ##
+    ##  FW_ULTRALIGHT200
+    ##
+    ##  FW_LIGHT300
+    ##
+    ##  FW_NORMAL400
+    ##
+    ##  FW_REGULAR400
+    ##
+    ##  FW_MEDIUM500
+    ##
+    ##  FW_SEMIBOLD600
+    ##
+    ##  FW_DEMIBOLD600
+    ##
+    ##  FW_BOLD700
+    ##
+    ##  FW_EXTRABOLD800
+    ##
+    ##  FW_ULTRABOLD800
+    ##
+    ##  FW_HEAVY900
+    ##
+    ##  FW_BLACK900
+    ##
+    ##  bItalic
+    ##
+    ##  是否斜体，true / false。
+    ##
+    ##  bUnderline
+    ##
+    ##  是否有下划线，true / false。
+    ##
+    ##  bStrikeOut
+    ##
+    ##  是否有删除线，true / false。
+    ##
+    ##  fbCharSet
+    ##
+    ##  指定字符集(详见 LOGFONT 结构体)。
+    ##
+    ##  fbOutPrecision
+    ##
+    ##  指定文字的输出精度(详见 LOGFONT 结构体)。
+    ##
+    ##  fbClipPrecision
+    ##
+    ##  指定文字的剪辑精度(详见 LOGFONT 结构体)。
+    ##
+    ##  fbQuality
+    ##
+    ##  指定文字的输出质量(详见 LOGFONT 结构体)。
+    ##
+    ##  fbPitchAndFamily
+    ##
+    ##  指定以常规方式描述字体的字体系列(详见 LOGFONT 结构体)。
+    ##
+    ##  font
+    ##
+    ##  指向 LOGFONT 结构体的指针。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  // 设置当前字体为高 16 像素的“宋体”（忽略行距）。
+    ##
+    ##  setfont(-16, 0,"宋体");
+    ##
+    ##  outtextxy(0, 0,"测试");
+    ##
+    ##  // 设置输出效果为抗锯齿（LOGFONTA是MBCS版本，LOGFONTW是UTF16版本）
+    ##
+    ##  LOGFONTA f;
+    ##
+    ##  getfont(&amp;f);                          // 获取当前字体设置
+    ##
+    ##  f.lfHeight = 48;                      // 设置字体高度为 48（包含行距）
+    ##
+    ##  strcpy(f.lfFaceName, "黑体");         // 设置字体为“黑体”
+    ##
+    ##  f.lfQuality = ANTIALIASED_QUALITY;    // 设置输出效果为抗锯齿
+    ##
+    ##  setfont(&amp;f);                          // 设置字体样式
+    ##
+    ##  outtextxy(0,50,"抗锯齿效果");
+    ##
+    ##
+    ##
+    ##
+
+proc settextjustify*(horiz: cint; vert: cint; pimg: PIMAGE = nil) {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于设置文字对齐方式。
+    ##
+    ## **参数**
+    ##  horiz
+    ##
+    ##  横向对齐方式，可选值LEFT_TEXT (默认), CENTER_TEXT, RIGHT_TEXT
+    ##
+    ##  vert
+    ##
+    ##  纵向对齐方式，可选值TOP_TEXT (默认), CENTER_TEXT, BOTTOM_TEXT
+    ##
+    ##  textstring
+    ##
+    ##  要输出的字符串的指针。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc textheight*(textstring: cstring; pimg: PIMAGE = nil): cint {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于获取输出字符串的高（像素为单位）
+    ##
+    ## **参数**
+    ##  textstring
+    ##
+    ##  指定的字符串指针。
+    ##
+    ##
+    ## **返回值**
+    ##  该字符串实际占用的像素高度。
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc textwidth*(textstring: cstring; pimg: PIMAGE = nil): cint {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于获取字符串的宽（像素为单位）
+    ##
+    ## **参数**
+    ##  textstring
+    ##
+    ##  指定的字符串指针。
+    ##
+    ##
+    ## **返回值**
+    ##  该字符串实际占用的像素宽度。
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
+
+proc xyprintf*(x: cint; y: cint; textstring: cstring) {.varargs, importc, header:"graphics.h", cdecl.}
+proc xyprintf*(x: cint; y: cint; textstring: WideCString) {.varargs, importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于在指定位置格式化输出字符串。
+    ##
+    ## **参数**
+    ##  x
+    ##
+    ##  字符串输出时头字母的 x 轴的坐标值
+    ##
+    ##  y
+    ##
+    ##  字符串输出时头字母的 y 轴的坐标值。
+    ##
+    ##  textstring
+    ##
+    ##  要输出的字符串的指针。
+    ##
+    ##  ...
+    ##
+    ##  要输出的内容的参数，类似printf。
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  无
     ##
     ##
     ##
