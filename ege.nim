@@ -3028,6 +3028,56 @@ proc fclock*(): cdouble  {.importc, header:"graphics.h", cdecl.}
     ##  （无）
     ##
 
+#时间
+proc random*(n: cuint = 0): cuint {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于生成某范围内的随机整数
+    ##
+    ## **参数**
+    ##  n
+    ##
+    ##  生成0至n-1之间的整数。
+    ##
+    ##  如果n为0，则返回0 - 0xFFFFFFFF的整数。
+    ##
+    ##
+    ## **返回值**
+    ##
+    ## **示例**
+    ##
+    ##
+    ##
+
+proc randomf*(): cdouble {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于生成0-1范围内的随机浮点数。
+    ##
+    ## **参数**
+    ##  无
+    ##
+    ##
+    ## **返回值**
+    ##
+    ## **示例**
+    ##
+    ##
+    ##
+
+proc randomize*() {.importc, header:"graphics.h", cdecl.}
+    ## 这个函数用于初始化随机数序列。如果不调用本函数，那么random返回的序列将会是确定不变的。
+    ##
+    ## **参数**
+    ##  （无）
+    ##
+    ##
+    ## **返回值**
+    ##  （无）
+    ##
+    ##
+    ## **示例**
+    ##  （无）
+    ##
+    ##
+    ##
+    ##
 
 
 when isMainModule:
