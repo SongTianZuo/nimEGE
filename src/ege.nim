@@ -2353,6 +2353,7 @@ proc xyprintf*(x: cint; y: cint; textstring: WideCString) {.varargs, importc, he
     ##
     ##
 
+proc newimage*(): PIMAGE {.importc, header:"graphics.h", cdecl.}
 proc newimage*(width: cint; height: cint): PIMAGE {.importc, header:"graphics.h", cdecl.}
 proc delimage*(pImg: PIMAGE) {.importc, header:"graphics.h", cdecl.}
 proc getimage*(pDstImg: PIMAGE; srcX: cint; srcY: cint; srcWidth: cint; srcHeight: cint) {.importc, header:"graphics.h", cdecl.}
