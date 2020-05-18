@@ -36,6 +36,15 @@ const
     DSTINVERT* = cast[culong](0x00550009)
     BLACKNESS* = cast[culong](0x00000042)
     WHITENESS* = cast[culong](0x00FF0062)
+    
+    LEFT_TEXT*   = 0
+    CENTER_TEXT* = 1
+    RIGHT_TEXT*  = 2
+    BOTTOM_TEXT* = 0
+    TOP_TEXT*    = 2
+    
+    OPAQUE* = 0
+    TRANSPARENT* = 0
 
 template RGBTOBGR*(color: untyped): untyped =
   ((((color) and 0x000000FF) shl 16) or (((color) and 0x00FF0000) shr 16) or
