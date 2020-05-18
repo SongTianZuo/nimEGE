@@ -94,7 +94,7 @@ template EGEAGRAY*(a, gray: untyped): untyped =
   (((gray) shl 16) or ((gray) shl 8) or (gray) or ((a) shl 24))
 
 type
-    IMAGE = object
+    IMAGE {.importcpp, header:"graphics.h", nodecl .} = object
     PIMAGE* = ptr IMAGE
     
     rendermode_e* = enum
